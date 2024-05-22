@@ -47,6 +47,7 @@ export function filterKernel(img) {
     const kernelSize = 3;
     const halfSize = Math.floor(kernelSize / 2);
     let matrixNow = getMatrixValues()
+    
     let kernel = [[matrixNow[0], matrixNow[1], matrixNow[2] ], [matrixNow[3], matrixNow[4], matrixNow[5]], [matrixNow[6], matrixNow[7], matrixNow[8]]];
     console.log(kernel)
     let div = 16;
