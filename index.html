@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <script src="dist/bundle.js"></script>
+    <title>Image processing</title>
+</head>
+<body>
+    <section class="sidebar">
+        <ul>
+            <li>
+                <button class="pip int_button" id="pip">
+                    <img src="images/mdi_pipette.svg" alt="">
+                    <p class="tooltip-pip">Инструмент Пипетка - выберите два цвета и оцените их контрастность</p>
+                </button>
+            </li>
+            <li>
+                <button class="hand int_button" id="hand">
+                    <img src="images/vaadin_hand.svg" alt="">
+                    <p class="tooltip-hand">Инструмент Рука - передвигайте изображение с помощью стрелок на клавиатуре </p>
+                </button>
+            </li>
+        </ul>
+    </section>
+    <section class="pippete-color" id="pippete">
+        <div class="modal_title">
+            <p class="title">Выберите цвета</p>
+            <button class="close" id="color-close-button"></button>
+        </div>
+        <div class="color-description">
+            <div class="color">
+                <div class="color-real-1"></div>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>RGB</th>
+                            <td class="R-1"></td>
+                            <td class="G-1"></td>
+                            <td class="B-1"></td>
+                        </tr>
+                        <tr>
+                            <th>XYZ</th>
+                            <td class="X-1"></td>
+                            <td class="Y-1"></td>
+                            <td class="Z-1"></td>
+                        </tr>
+                        <tr>
+                            <th>LAB</th>
+                            <td class="L-1"></td>
+                            <td class="A-1"></td>
+                            <td class="Bl-1"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul class="color-type">
+                    <li class="type">
+                        <p class="coordinate-1"></p>
+                    </li>
+                </ul>
+            </div>
+            <div class="color color-2">
+                <div class="color-real-2"></div>
+                <p class="tooltip-color">Для выбора второго цвета используйте комбинацию Shift + Клик</p>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>RGB</th>
+                            <td class="R-2"></td>
+                            <td class="G-2"></td>
+                            <td class="B-2"></td>
+                        </tr>
+                        <tr>
+                            <th>XYZ</th>
+                            <td class="X-2"></td>
+                            <td class="Y-2"></td>
+                            <td class="Z-2"></td>
+                        </tr>
+                        <tr>
+                            <th>LAB</th>
+                            <td class="L-2"></td>
+                            <td class="A-2"></td>
+                            <td class="Bl-2"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <ul class="color-type">
+                    <li class="type">
+                        <p class="coordinate-2"></p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="contrast_description">
+            <div class="contrast-base">
+                <p class="text">Контраст</p>
+                <p class="contrast"></p>
+            </div>
+            <p class="contrast_warning"></p>
+        </div>
+
+    </section>
+    <div class="wrapper">
+        <header class="header">
+            <button class="open" id="callback-button">Открыть изображение</button>
+            <button class="open" id="scale-button">Изменить размер</button>
+            <a id="save-button" class="open" >Сохранить</a>
+            <button class="open" id="curves-button">Кривые</button>
+            <button class="open" id="filter-button">Фильтр</button>
+        </header>
+        <div class="content">
+            <div class="modal" id="modal-1">
+                <div class="modal_title">
+                    <p class="title">Открыть изображение</p>
+                    <button class="close" id="close-button"></button>
+                </div>
+                <p class="dop">выберите файл или добавьте url изображения</p>
+                <form id="image-form" class="form">
+                    <input id="i-f" class="i-f" name="image" type="file">
+                    <label class="url" for="i-u">URL изображения</label>
+                    <input class="i-u" id="i-u" type="url" name="rl" id="rl">
+                    <!-- <button onclick="clearForm()" id="reset-button">Очистить</button> -->
+                    <input type="submit" class="sub" id="sub" value="Открыть" >
+                </form>
+            </div>
+            <dialog class="scale_modal" id="scale-dialog">
+                <div class="modal_title">
+                    <p class="title">Изменить размер</p>
+                    <button class="close" id="close-dialog"></button>
+                </div>
+                <div class="size_parameter">
+                    <p class="dop_size">Исходный размер</p>
+                    <p class="img-size"></p>
+                </div>
+                <div class="size_parameter">
+                    <p class="dop_size">Измененный размер</p>
+                    <p class="scale-size"></p>
+                </div>
+                <form id="scale-form"  class="form">
+                    <select name="" id="measure">
+                        <option value="px">Пиксель</option>
+                        <option value="%">Проценты</option>
+                    </select>
+                    <fieldset class="parameters">
+                        <div class="groups">
+                            <label for="">Ширина</label>
+                            <input class="inp" id="numWidth" type="number">
+                        </div>
+                        <div class="groups">
+                            <label for="">Высота</label>
+                            <input class="inp" id="numHeight" type="number"> 
+                        </div>
+                    </fieldset>
+                    <label>
+                        <input class="check"  id="key" type="checkbox" checked />
+                        Cохранить пропорции
+                    </label>
+                    <div class="method">
+                        <select clas name="" id="">
+                            <option value="">Ближайший сосед</option>
+                        </select>
+                        <button class="tooltip">?
+                            <span class="tooltiptext">Для каждого пикселя конечного изображения выбирается один пиксель исходного, наиболее близкий к его положению с учетом масштабирования.</span>
+                        </button>
+                    </div>
+                    <input type="button" class="sub" id="confirm" value="ОК">
+                </form>
+            </dialog>
+            <dialog class="curves_modal" id="curves-dialog">
+                <div class="modal_title">
+                    <p class="title">Кривые</p>
+                    <button class="close" id="close-curves"></button>
+                    <p class="tooltip-curves">Инструмент Кривые позволит изменить изображение посредством изменения значений пикселей, согласно созданному графику</p>
+                </div>
+                <div class="main_block">
+                    <div class="block_main">
+                        <div class="diagram">
+                            <canvas id="canvasHistogram" width="256" height="256"></canvas>
+                        </div>
+                        <ul class="group_input">
+                            <li class="input_item">
+                                <p class="text">in</p>
+                                <input id="first-in-x" class="in-out" type="number" value="0">
+                            </li>
+                            <li class="input_item">
+                                <p class="text">in</p>
+                                <input id="second-in-x" class="in-out" type="number" value="255">
+                            </li>
+                            <li class="input_item"><button id="change-button" class="sub" disabled>Изменить</button></li>
+                            <li class="input_item">
+                                <p class="text">out</p>
+                                <input id="first-out-y" class="in-out" type="number" value="0">
+                            </li>
+                            <li class="input_item">
+                                <p class="text">out</p>
+                                <input id="second-out-y" class="in-out" type="number" value="255">
+                            </li>
+
+                        </ul>
+
+                    </div>
+                    <div class="block_func">
+                        <input type="button" class="sub" id="confirm-curves" value="Применить">
+                        <button class="sub" id="cancel-curves">Сбросить</button>
+                        <label class="preview">
+                            <input id="preview" checked type="checkbox">
+                            Preview
+                        </label>
+                    </div>
+                </div>
+            </dialog>
+            <dialog class="filter_modal" id="filter-dialog">
+                <div class="modal_title">
+                    <p class="title">Фильтр</p>
+                    <button class="close" id="close-filter"></button>
+                </div>
+                <div class="main_block">
+                    <div class="block_main">
+                        <div class="group_matriz">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                            <input type="number" class="in-out" id="kernel" value="1">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                            <input type="number" class="in-out" id="kernel" value="0">
+                        </div>
+                    </div>
+                    <div class="block_func">
+                        <label class="preview">
+                            <input type="checkbox" id="preview-filter" checked>
+                            Preview
+                        </label>
+                        <label class="preview">
+                            <input type="radio" id="identity" checked>
+                            Тождественное отображение
+                        </label>
+                        <label class="preview">
+                            <input type="radio" id="sharpen">
+                            Повышение резкости
+                        </label>
+                        <label class="preview">
+                            <input type="radio" id="gaussian">
+                             Фильтр Гаусса
+                        </label>
+                        <label class="preview">
+                            <input type="radio" id="blur">
+                            Прямоугольное размытие
+                        </label>
+                    </div>
+                </div>
+                <div class="buttons">
+                    <input type="button" class="sub" id="confirm" value="ОК">
+                    <button class="sub">Сбросить</button>
+                </div>
+            </dialog>
+            <div id="container" class="container">
+                <canvas class="image" id="image" width="0"></canvas>
+            </div>
+        </div>
+        <div class="footer">
+                <ul class="func">
+                    <li class="sizes">
+                        <p class="text">Размер изображения:</p>
+                        <p class="size"></p>
+                        <div class="scale_group">
+                            <p class="text">Масштаб</p>
+                            <input type="range" id="scale" name="scale" min="10" step="10" max="300" value="100"  />
+                            <p class="range-value"></p>
+                        </div>
+                    </li>
+                    <li class="setting">
+                        <div class="co">
+                            <p class="text">Цвет</p>
+                            <p class="rgb"></p>
+                            <div class="color-real"></div>
+                            
+                        </div>
+                        <div class="xy">
+                            <p class="text">Координаты</p>
+                            <p class="coordinate"><p>
+                        </div>  
+                    </li>
+                </ul>  
+            </div>
+    </div>
+
+</body>
+</html>
